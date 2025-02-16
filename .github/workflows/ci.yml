@@ -40,5 +40,8 @@ jobs:
             sleep 5
           done
 
+      - name: ESLint check
+        run: npm run lint
+
       - name: Run tests
         run: npm run test
