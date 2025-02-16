@@ -35,7 +35,7 @@ jobs:
 
       - name: Wait for MySQL to be ready
         run: |
-          until docker exec mysql mysqladmin --user=root --password=root --host=localhost --port=3306 ping --silent; do
+          until docker exec $(docker ps -q -f "name=mysql") mysqladmin --user=root --password=root --host=localhost --port=3306 ping --silent; do
             echo "Waiting for MySQL..."
             sleep 5
           done
