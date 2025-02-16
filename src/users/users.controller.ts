@@ -5,6 +5,7 @@ import {
   Get,
   Param,
   Post,
+  Patch,
   ParseIntPipe,
 } from "@nestjs/common";
 import { User } from "./user.entity";
@@ -12,6 +13,7 @@ import { UsersService } from "./users.service";
 import {
   ZodValidationPipe,
   CreateUserSchema,
+  UpdateUserSchema,
   UserModel,
   CreateUserDto,
 } from "./zod";
@@ -33,6 +35,20 @@ export class UsersController {
     @Body(new ZodValidationPipe(CreateUserSchema)) createUserDto: CreateUserDto,
   ): Promise<User> {
     return this.usersService.create(createUserDto);
+  }
+
+  @Patch(":id")
+  @ApiBody({ type: UserModel })
+  @ApiResponse({
+    status: 200,
+    description: "User created successfully",
+    type: UserModel,
+  })
+  update(
+    @Param("id", ParseIntPipe) id: number,
+    @Body(new ZodValidationPipe(UpdateUserSchema)) createUserDto: CreateUserDto,
+  ): Promise<User> {
+    return this.usersService.update(id, createUserDto);
   }
 
   @Get()

@@ -65,6 +65,23 @@ describe("UserService", () => {
     });
   });
 
+  describe("update()", () => {
+    it("should successfully update a user", async () => {
+      const testUser = {
+        firstName: "John",
+        lastName: "Doe",
+        isActive: true,
+      };
+      const newUser = await service.create(testUser);
+      const newName = "Bruce";
+      const response = await service.update(newUser.id, {
+        firstName: newName,
+      });
+      expect(response.firstName).toEqual(newName);
+      expect((await service.findOne(newUser.id)).firstName).toEqual(newName);
+    });
+  });
+
   describe("findAll()", () => {
     it("should return an array of users", async () => {
       const users = await service.findAll();
