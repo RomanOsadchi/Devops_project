@@ -2,7 +2,7 @@ import { INestApplication } from '@nestjs/common';
 import { Test, TestingModule } from '@nestjs/testing';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import * as request from 'supertest';
-import { CreateUserDto } from '../../src/users/dto/create-user.dto';
+import { CreateUserDto } from '../../src/users/swagger_dto/create-user.dto';
 import { UsersModule } from '../../src/users/users.module';
 
 describe('Users - /users (e2e)', () => {
