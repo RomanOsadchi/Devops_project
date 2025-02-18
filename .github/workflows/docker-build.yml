@@ -21,11 +21,11 @@ jobs:
         uses: google-github-actions/auth@v1
         with:
           credentials_json: ${{ secrets.GCS_KEY }}
-          
+
       - name: Configure Docker for GCR
         run: |
           gcloud auth configure-docker --quiet
-          
+
       - name: Build with cache
         uses: docker/build-push-action@v4
         with:
@@ -34,3 +34,26 @@ jobs:
           tags: gcr.io/${{ secrets.GCP_PROJECT_ID }}/nest-app:latest
           cache-from: type=gha
           cache-to: type=gha,mode=max
+
+  deploy:
+    needs: build-and-push
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Authenticate to GCP
+        uses: google-github-actions/auth@v1
+        with:
+          credentials_json: ${{ secrets.GCS_KEY }}
+
+      - name: Get GKE Credentials
+        uses: google-github-actions/get-gke-credentials@v1
+        with:
+          cluster_name: gke-cluster
+          location: europe-west10
+          project_id: ${{ secrets.GCP_PROJECT_ID }}
+
+      - name: Deploy to GKE
+        run: |
+          kubectl apply -f k8s/
