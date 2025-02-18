@@ -1,0 +1,35 @@
+name: Build and Push to GCR
+
+on:
+  push:
+    branches:
+      - main
+
+
+jobs:
+  build-and-push:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Set up Docker Buildx
+        uses: docker/setup-buildx-action@v2
+
+      - name: Authenticate to GCR
+        uses: google-github-actions/auth@v1
+        with:
+          credentials_json: ${{ secrets.GCS_KEY }}
+
+      - name: Configure Docker for GCR
+        run: |
+          gcloud auth configure-docker --quiet
+
+      - name: Build and tag Docker image
+        run: |
+          docker build -t gcr.io/${{ secrets.GCP_PROJECT_ID }}/nest-app:latest .
+
+      - name: Push to GCR
+        run: |
+          docker push gcr.io/${{ secrets.GCP_PROJECT_ID }}/my-image:latest
