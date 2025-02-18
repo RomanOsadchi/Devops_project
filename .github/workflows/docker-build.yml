@@ -21,7 +21,11 @@ jobs:
         uses: google-github-actions/auth@v1
         with:
           credentials_json: ${{ secrets.GCS_KEY }}
-
+          
+      - name: Configure Docker for GCR
+        run: |
+          gcloud auth configure-docker --quiet
+          
       - name: Build with cache
         uses: docker/build-push-action@v4
         with:
