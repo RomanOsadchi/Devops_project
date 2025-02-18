@@ -48,10 +48,10 @@ jobs:
         with:
           terraform_version: 1.4.6
 
-      - name: Authenticate to GCP
-        run: |
-          echo "${{ secrets.GCS_KEY }}" > credentials.json
-          export GOOGLE_APPLICATION_CREDENTIALS=$PWD/credentials.json
+      - name: Authenticate to GCR
+        uses: google-github-actions/auth@v1
+        with:
+          credentials_json: ${{ secrets.GCS_KEY }}
 
       - name: Initialize Terraform
         run: terraform -chdir=terraform init
