@@ -15,5 +15,8 @@ spec:
       containers:
         - name: nest-app
           image: gcr.io/devops-project-451319/nest-app:latest
+          imagePullPolicy: Always
+          env:
+            DB_HOST: mysql
           ports:
             - containerPort: 3000
