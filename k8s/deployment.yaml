@@ -17,6 +17,13 @@ spec:
           image: gcr.io/devops-project-451319/nest-app:latest
           imagePullPolicy: Always
           env:
-            DB_HOST: mysql
+            - name: DB_HOST
+              value: mysql
+            - name: DB_ROOT_PASSWORD
+              value: "root"
+            - name: DB_ROOT_USERNAME
+              value: "root"
+            - name: DB_DATABASE
+              value: "root"
           ports:
             - containerPort: 3000
