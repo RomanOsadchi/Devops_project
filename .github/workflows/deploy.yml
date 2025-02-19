@@ -86,5 +86,9 @@ jobs:
           project_id: ${{ secrets.GCP_PROJECT_ID }}
 
       - name: Deploy to GKE
+        env:
+          DB_ROOT_PASSWORD: ${{ secrets.DB_ROOT_PASSWORD }}
+          DB_USERNAME: ${{ secrets.DB_USERNAME }}
+          DB_DATABASE: ${{ env.DB_USERNAME }}
         run: |
           kubectl apply -f k8s/ && kubectl rollout restart deployment/nest-app

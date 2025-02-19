@@ -25,3 +25,15 @@ Then, run Nest as usual:
 
 `npm run start`
 
+ci.yml workflow triggers on pull request to main branch
+deploy.yml workflow triggers on push to main branch
+
+### terraform apply
+
+`terraform init &&
+terraform apply
+`
+### Connect kubectl:
+
+`gcloud container clusters get-credentials gke-cluster --region europe-west10 --project devops-project-451319`
+
