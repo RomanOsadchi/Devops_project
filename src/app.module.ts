@@ -1,14 +1,13 @@
 import { Module } from "@nestjs/common";
 import { TypeOrmModule } from "@nestjs/typeorm";
 import { UsersModule } from "./users/users.module";
+import { HealthcheckModule } from "./healthcheck/healthcheck.module";
 import { ConfigModule } from "@nestjs/config";
-
+import { AppController } from "./app.controller";
 import * as process from "node:process";
 
 @Module({
-  // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
   imports: [
-    // eslint-disable-next-line @typescript-eslint/no-unsafe-member-access,@typescript-eslint/no-unsafe-call
     ConfigModule.forRoot({
       isGlobal: true,
     }),
@@ -23,6 +22,8 @@ import * as process from "node:process";
       synchronize: true,
     }),
     UsersModule,
+    HealthcheckModule,
   ],
+  controllers: [AppController],
 })
 export class AppModule {}
