@@ -12,6 +12,10 @@ spec:
       labels:
         app: nest-app
     spec:
+      initContainers:
+        - name: wait-for-mysql
+          image: busybox
+          command: [ "sh", "-c", "until nc -z mysql 3306; do echo waiting for mysql; sleep 3; done;" ]
       containers:
         - name: nest-app
           image: gcr.io/devops-project-451319/nest-app:latest
