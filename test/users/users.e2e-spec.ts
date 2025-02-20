@@ -5,10 +5,10 @@ import * as request from "supertest";
 import { CreateUserDto, UpdateUserDto } from "../../src/users/zod";
 import { UsersModule } from "../../src/users/users.module";
 import { UsersService } from "../../src/users/users.service";
+import { User } from "../../src/users/user.entity";
 
 describe("Users - /users (e2e)", () => {
   const users = {
-    id: 1,
     firstName: "FirstName #1",
     lastName: "LastName #1",
     isActive: true,
@@ -44,8 +44,9 @@ describe("Users - /users (e2e)", () => {
       .post("/users")
       .send(users as CreateUserDto)
       .expect(201)
-      .then(({ body }) => {
-        expect(body).toEqual(users);
+      .then(({ body }: { body: User }) => {
+        const id: number = body?.id;
+        expect(body).toEqual({ ...users, id });
       });
   });
 
@@ -62,9 +63,9 @@ describe("Users - /users (e2e)", () => {
     return await request(app.getHttpServer())
       .patch(`/users/${newUser.id}`)
       .send(update as UpdateUserDto)
-      .expect(201)
-      .then(({ body }) => {
-        expect(body).toEqual(users);
+      .expect(200)
+      .then(({ body }: { body: User }) => {
+        expect(body).toEqual({ ...newUser, firstName: "Bruce" });
       });
   });
 
@@ -77,17 +78,30 @@ describe("Users - /users (e2e)", () => {
       });
   });
 
-  it("Get one user [GET /users/:id]", () => {
+  it("Get one user [GET /users/:id]", async () => {
+    const newUser = await usersService.create({
+      firstName: "John",
+      lastName: "Doe",
+      isActive: true,
+    });
     return request(app.getHttpServer())
-      .get("/users/2")
+      .get(`/users/${newUser.id}`)
       .expect(200)
       .then(({ body }) => {
-        expect(body).toBeDefined();
+        expect(body).toEqual(newUser);
       });
   });
 
-  it("Delete one user [DELETE /users/:id]", () => {
-    return request(app.getHttpServer()).delete("/users/1").expect(200);
+  it("Delete one user [DELETE /users/:id]", async () => {
+    const newUser = await usersService.create({
+      firstName: "John",
+      lastName: "Doe",
+      isActive: true,
+    });
+    await request(app.getHttpServer())
+      .delete(`/users/${newUser.id}`)
+      .expect(200);
+    return request(app.getHttpServer()).get(`/users/${newUser.id}`).expect(404);
   });
 
   afterAll(async () => {
