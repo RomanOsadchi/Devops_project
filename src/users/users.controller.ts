@@ -7,6 +7,7 @@ import {
   Post,
   Patch,
   ParseIntPipe,
+  NotFoundException,
 } from "@nestjs/common";
 import { User } from "./user.entity";
 import { UsersService } from "./users.service";
@@ -59,12 +60,20 @@ export class UsersController {
 
   @Get(":id")
   @ApiResponse({ status: 200, description: "User founded", type: UserModel })
-  findOne(@Param("id", ParseIntPipe) id: number): Promise<User> {
-    return this.usersService.findOne(id);
+  async findOne(@Param("id", ParseIntPipe) id: number): Promise<User> {
+    const user = await this.usersService.findOne(id);
+    if (!user) {
+      throw new NotFoundException(`User with ID ${id} not found`);
+    }
+    return user;
   }
 
   @Delete(":id")
-  remove(@Param("id") id: string): Promise<void> {
+  async remove(@Param("id") id: number): Promise<void> {
+    const user = await this.usersService.findOne(id);
+    if (!user) {
+      throw new NotFoundException(`User with ID ${id} not found`);
+    }
     return this.usersService.remove(id);
   }
 }
