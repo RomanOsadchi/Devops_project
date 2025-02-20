@@ -65,10 +65,10 @@ jobs:
         run: npm run test
 
       - name: Run api tests
-        run: |
-          DB_USERNAME=root
-          DB_ROOT_PASSWORD=root
-          DB_DATABASE=test
-          DB_PORT=3007
-          DB_HOST=mysql
-          npm run test:e2e
+        env:
+          DB_USERNAME: root
+          DB_ROOT_PASSWORD: root
+          DB_DATABASE: test
+          DB_PORT: 3307
+          DB_HOST: mysql
+        run: npm run test:e2e
