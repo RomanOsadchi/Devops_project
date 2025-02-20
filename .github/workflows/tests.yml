@@ -1,4 +1,4 @@
-name: CI
+name: Tests
 
 on:
   pull_request:
@@ -24,7 +24,7 @@ jobs:
       - name: Build
         run: npm run build
 
-  unit-tests:
+  tests:
     runs-on: ubuntu-latest
     services:
       mysql:
@@ -61,5 +61,14 @@ jobs:
       - name: ESLint check
         run: npm run lint
 
-      - name: Run tests
+      - name: Run unit tests
         run: npm run test
+
+      - name: Run api tests
+        env:
+          DB_USERNAME: root
+          DB_ROOT_PASSWORD: root
+          DB_DATABASE: test
+          DB_PORT: 3307
+          DB_HOST: 127.0.0.1
+        run: npm run test:e2e

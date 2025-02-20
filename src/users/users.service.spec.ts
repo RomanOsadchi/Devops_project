@@ -99,9 +99,10 @@ describe("UserService", () => {
 
   describe("remove()", () => {
     it("should call remove with the passed value", async () => {
+      const newUser = await service.create(oneUser);
       const removeSpy = jest.spyOn(repository, "delete");
-      const retVal = await service.remove("2");
-      expect(removeSpy).toBeCalledWith("2");
+      const retVal = await service.remove(newUser.id);
+      expect(removeSpy).toBeCalledWith(newUser.id);
       expect(retVal).toBeUndefined();
     });
   });

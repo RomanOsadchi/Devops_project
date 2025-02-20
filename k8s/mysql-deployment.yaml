@@ -29,6 +29,17 @@ spec:
           image: mysql:9
           ports:
             - containerPort: 3306
+          env:
+            - name: MYSQL_ROOT_PASSWORD
+              valueFrom:
+                secretKeyRef:
+                  name: mysql-secret
+                  key: root-password
+            - name: MYSQL_DATABASE
+              valueFrom:
+                secretKeyRef:
+                  name: mysql-secret
+                  key: database
           volumeMounts:
             - name: mysql-storage
               mountPath: /var/lib/mysql
@@ -42,10 +53,9 @@ kind: Service
 metadata:
   name: mysql
 spec:
-  type: NodePort
+  type: LoadBalancer
   ports:
     - port: 3306
       targetPort: 3306
-      nodePort: 30306
   selector:
     app: mysql

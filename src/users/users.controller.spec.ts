@@ -86,8 +86,9 @@ describe("UsersController", () => {
   });
 
   describe("remove()", () => {
-    it("should remove the user", () => {
-      usersController.remove("2");
+    it("should remove the user", async () => {
+      const newUser = await usersController.create(createUserDto);
+      await usersController.remove(newUser.id);
       expect(usersService.remove).toHaveBeenCalled();
     });
   });
