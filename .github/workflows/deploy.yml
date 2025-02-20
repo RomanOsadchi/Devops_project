@@ -85,6 +85,18 @@ jobs:
           location: europe-west10
           project_id: ${{ secrets.GCP_PROJECT_ID }}
 
+      - name: Create MySQL Secret
+        env:
+          DB_ROOT_PASSWORD: ${{ secrets.DB_ROOT_PASSWORD }}
+          DB_USERNAME: ${{ secrets.DB_USERNAME }}
+          DB_DATABASE: ${{ env.DB_DATABASE }}
+          MYSQL_ROOT_PASSWORD: ${{ secrets.MYSQL_ROOT_PASSWORD }}
+          MYSQL_DATABASE: ${{ env.DB_DATABASE }}
+        run: |
+          kubectl create secret generic mysql-secret --ignore-not-found \
+            --from-literal=root-password=$DB_ROOT_PASSWORD \
+            --from-literal=username=$DB_USERNAME \
+            --from-literal=database=$DB_DATABASE
       - name: Deploy to GKE
         env:
           DB_ROOT_PASSWORD: ${{ secrets.DB_ROOT_PASSWORD }}
