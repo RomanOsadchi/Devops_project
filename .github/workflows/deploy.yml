@@ -89,9 +89,9 @@ jobs:
         env:
           DB_ROOT_PASSWORD: ${{ secrets.DB_ROOT_PASSWORD }}
           DB_USERNAME: ${{ secrets.DB_USERNAME }}
-          DB_DATABASE: ${{ env.DB_DATABASE }}
+          DB_DATABASE: root
           MYSQL_ROOT_PASSWORD: ${{ secrets.MYSQL_ROOT_PASSWORD }}
-          MYSQL_DATABASE: ${{ env.DB_DATABASE }}
+          MYSQL_DATABASE: root
         run: |
           kubectl delete secret mysql-secret --ignore-not-found=true
           kubectl create secret generic mysql-secret \
