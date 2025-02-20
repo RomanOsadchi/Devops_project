@@ -22,11 +22,11 @@ describe("Users - /users (e2e)", () => {
       imports: [
         TypeOrmModule.forRoot({
           type: "mysql",
-          host: "127.0.0.1",
-          port: 3307,
-          username: "root",
-          password: "root",
-          database: "test",
+          host: process.env.DB_HOST || "127.0.0.1",
+          port: Number(process.env.DB_PORT) || 3306,
+          username: process.env.DB_USERNAME || "root",
+          password: process.env.DB_ROOT_PASSWORD || "root",
+          database: process.env.DB_DATABASE || "root",
           autoLoadEntities: true,
           synchronize: true,
         }),
