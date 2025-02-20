@@ -85,10 +85,17 @@ jobs:
           location: europe-west10
           project_id: ${{ secrets.GCP_PROJECT_ID }}
 
+      - name: Create MySQL Secret
+        run: |
+          kubectl create secret generic mysql-secret \
+            --from-literal=root-password=${{ secrets.DB_ROOT_PASSWORD }} \
+            --from-literal=username=${{ secrets.DB_USERNAME }} \
+            --from-literal=database=${{ env.DB_DATABASE }}
+
       - name: Deploy to GKE
         env:
           DB_ROOT_PASSWORD: ${{ secrets.DB_ROOT_PASSWORD }}
           DB_USERNAME: ${{ secrets.DB_USERNAME }}
-          DB_DATABASE: ${{ env.DB_USERNAME }}
+          DB_DATABASE: ${{ env.DB_DATABASE }}
         run: |
           kubectl apply -f k8s/ && kubectl rollout restart deployment/nest-app
