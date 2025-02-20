@@ -70,5 +70,5 @@ jobs:
           DB_ROOT_PASSWORD: root
           DB_DATABASE: test
           DB_PORT: 3307
-          DB_HOST: mysql
+          DB_HOST: 127.0.0.1
         run: npm run test:e2e
