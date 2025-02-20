@@ -25,7 +25,7 @@ Then, run Nest as usual:
 
 `npm run start`
 
-ci.yml workflow triggers on pull request to main branch
+test.yml workflow triggers on pull request to main branch
 deploy.yml workflow triggers on push to main branch
 
 ### terraform apply
