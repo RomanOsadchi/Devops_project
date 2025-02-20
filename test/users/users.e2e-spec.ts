@@ -18,16 +18,6 @@ describe("Users - /users (e2e)", () => {
   let app: INestApplication;
 
   beforeAll(async () => {
-    console.log({
-      type: "mysql",
-      host: process.env.DB_HOST,
-      port: Number(process.env.DB_PORT),
-      username: process.env.DB_USERNAME,
-      password: process.env.DB_ROOT_PASSWORD,
-      database: process.env.DB_DATABASE,
-      autoLoadEntities: true,
-      synchronize: true,
-    });
     const moduleFixture: TestingModule = await Test.createTestingModule({
       imports: [
         TypeOrmModule.forRoot({
