@@ -93,7 +93,8 @@ jobs:
           MYSQL_ROOT_PASSWORD: ${{ secrets.MYSQL_ROOT_PASSWORD }}
           MYSQL_DATABASE: ${{ env.DB_DATABASE }}
         run: |
-          kubectl create secret generic mysql-secret --ignore-not-found \
+          kubectl delete secret mysql-secret --ignore-not-found=true
+          kubectl create secret generic mysql-secret \
             --from-literal=root-password=$DB_ROOT_PASSWORD \
             --from-literal=username=$DB_USERNAME \
             --from-literal=database=$DB_DATABASE
