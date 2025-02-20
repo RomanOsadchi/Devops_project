@@ -23,17 +23,17 @@ spec:
           env:
             - name: DB_HOST
               value: mysql
-            - name: MYSQL_ROOT_PASSWORD
+            - name: DB_ROOT_PASSWORD
               valueFrom:
                 secretKeyRef:
                   name: mysql-secret
                   key: root-password
-            - name: MYSQL_USER
+            - name: DB_USER
               valueFrom:
                 secretKeyRef:
                   name: mysql-secret
                   key: username
-            - name: MYSQL_DATABASE
+            - name: DB_DATABASE
               valueFrom:
                 secretKeyRef:
                   name: mysql-secret
